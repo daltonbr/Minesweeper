@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Field : MonoBehaviour
 {
@@ -20,6 +21,29 @@ public class Field : MonoBehaviour
         Create(size, totalBombs);
     }
 
+    private void HandleCellMouseUp(Cell cell)
+    {
+        //Debug.Log($"HasBomb {HasBomb}");
+        if (cell.HasBomb)
+        {
+            cell.ShowImage();
+            return;
+        }
+
+        if (cell.BombCount == 0)
+        {
+            //TODO: recursively call all neighbors and 'click them'
+            cell.ShowBombCount();
+            return;
+        }
+        
+        if (cell.BombCount > 0)
+        {
+            cell.ShowBombCount();
+            return;
+        }
+    }
+    
     private void Create(Vector2Int fieldSize, uint bombs)
     {
         Vector2 offset = new Vector2(fieldSize.x / 2f, fieldSize.y / 2f);
@@ -34,6 +58,7 @@ public class Field : MonoBehaviour
                 newGameObject.name = $"Cell {i},{j}";
                 newGameObject.transform.position = new Vector3(i - offset.x, j - offset.y, 0);
                 newCell.Create(new Vector2Int(i, j), false);
+                newCell.OnCellMouseUp += HandleCellMouseUp;
                 _cells[i, j] = newCell;
             }
         }

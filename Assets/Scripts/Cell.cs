@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
 
 public class Cell : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class Cell : MonoBehaviour
     private Vector2Int _coordinate;
     private Image _image;
     private TMP_Text _text;
+
+
+    public delegate void CellMouseUp(Cell cell);
+    public event CellMouseUp OnCellMouseUp;
     
     private void Awake()
     {
@@ -36,18 +41,7 @@ public class Cell : MonoBehaviour
 
     private void OnMouseUp()
     {
-        //Debug.Log($"HasBomb {HasBomb}");
-        if (HasBomb)
-        {
-            _image.enabled = true;
-            return;
-        }
-
-        if (BombCount >= 0)
-        {
-            ShowBombCount();
-            return;
-        }
+        OnCellMouseUp?.Invoke(this);
     }
 
     public void Create(Vector2Int coordinate, bool hasBomb)
@@ -66,5 +60,10 @@ public class Cell : MonoBehaviour
         _text.text = BombCount.ToString();
         _text.enabled = true;
         _image.enabled = false;
+    }
+
+    public void ShowImage()
+    {
+        _image.enabled = true;
     }
 }
