@@ -8,7 +8,7 @@ public class Cell : MonoBehaviour
     private uint _mineCount = 0;
     private Vector2Int _coordinate;
     private Image _image;
-    private TMP_Text _text;
+    //private TMP_Text _text;
     private bool _activated;
     private bool _flagged;
 
@@ -31,7 +31,7 @@ public class Cell : MonoBehaviour
     private void Awake()
     {
         _image = GetComponentInChildren<Image>();
-        _text = GetComponentInChildren<TMP_Text>();
+        //_text = GetComponentInChildren<TMP_Text>();
     }
 
     public bool HasMine
@@ -72,9 +72,6 @@ public class Cell : MonoBehaviour
 
     private void ShowMineCount()
     {
-//        _text.text = BombCount.ToString();
-//        _text.enabled = true;
-//        _image.enabled = false;
         if (HasMine)
         {
             _image.sprite = mine;
