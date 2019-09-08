@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class Field : MonoBehaviour
 {
@@ -9,11 +8,11 @@ public class Field : MonoBehaviour
     [SerializeField] private GameObject cellPrefab;
 
     [SerializeField] private Transform cellHolder;
-    
+
     // List/Array to hold cells
-    private Cell[,] _cells;// = new int[9,9];
+    private Cell[,] _cells; // = new int[9,9];
     private List<Cell> _bombCells;
-    
+
     private void Start()
     {
         size = new Vector2Int(9, 9);
@@ -23,27 +22,43 @@ public class Field : MonoBehaviour
 
     private void HandleCellMouseUp(Cell cell)
     {
-        //Debug.Log($"HasBomb {HasBomb}");
         if (cell.HasBomb)
         {
-            cell.ShowImage();
+            cell.Activate();
+            GameOver();
             return;
         }
 
         if (cell.BombCount == 0)
         {
-            //TODO: recursively call all neighbors and 'click them'
-            cell.ShowBombCount();
+            cell.Activate();
+            foreach (var neighbor in GetAllInactiveNeighbors(cell))
+            {
+                if (neighbor.HasBomb) continue;
+                if (neighbor.BombCount == 0)
+                {
+                    HandleCellMouseUp(neighbor);
+                }
+                else
+                {
+                    if (neighbor.BombCount > 0)
+                    {
+                        neighbor.Activate();
+                    }
+                }
+            }
             return;
         }
-        
-        if (cell.BombCount > 0)
-        {
-            cell.ShowBombCount();
-            return;
-        }
+
+        //cell.BombCount > 0
+        cell.Activate();
     }
-    
+
+    private void GameOver()
+    {
+        Debug.LogWarning("[Field] GameOver");
+    }
+
     private void Create(Vector2Int fieldSize, uint bombs)
     {
         Vector2 offset = new Vector2(fieldSize.x / 2f, fieldSize.y / 2f);
@@ -103,5 +118,44 @@ public class Field : MonoBehaviour
                 _cells[coordinate.x + i, coordinate.y + j].AddBombCount();
             }
         }
+    }
+
+    private List<Cell> GetAllNeighbors(Cell cell)
+    {
+        var coordinate = cell.Coordinate;
+        var neighbors = new List<Cell>();
+        for (int i = -1; i <= 1; i++)
+        {
+            if (coordinate.x + i < 0 || coordinate.x + i >= size.x) continue;
+            for (int j = -1; j <= 1; j++)
+            {
+                if (coordinate.y + j < 0 || coordinate.y + j >= size.y) continue;
+                if (i == 0 && j == 0) continue;
+                neighbors.Add(_cells[coordinate.x + i, coordinate.y + j]);
+            }
+        }
+
+        return neighbors;
+    }
+    
+    private List<Cell> GetAllInactiveNeighbors(Cell cell)
+    {
+        var coordinate = cell.Coordinate;
+        var neighbors = new List<Cell>();
+        for (int i = -1; i <= 1; i++)
+        {
+            if (coordinate.x + i < 0 || coordinate.x + i >= size.x) continue;
+            for (int j = -1; j <= 1; j++)
+            {
+                if (coordinate.y + j < 0 || coordinate.y + j >= size.y) continue;
+                if (i == 0 && j == 0) continue;
+                var currentCell = _cells[coordinate.x + i, coordinate.y + j];
+                if (!currentCell.IsActive)
+                {
+                    neighbors.Add(currentCell);
+                }
+            }
+        }
+        return neighbors;
     }
 }

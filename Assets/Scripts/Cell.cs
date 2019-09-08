@@ -1,7 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Image = UnityEngine.UI.Image;
+using UnityEngine.UI;
 
 public class Cell : MonoBehaviour
 {
@@ -10,11 +9,13 @@ public class Cell : MonoBehaviour
     private Vector2Int _coordinate;
     private Image _image;
     private TMP_Text _text;
+    private bool _activated;
 
 
     public delegate void CellMouseUp(Cell cell);
+
     public event CellMouseUp OnCellMouseUp;
-    
+
     private void Awake()
     {
         _image = GetComponentInChildren<Image>();
@@ -25,6 +26,11 @@ public class Cell : MonoBehaviour
     {
         get => _hasBomb;
         set => _hasBomb = value;
+    }
+
+    public bool IsActive
+    {
+        get => _activated;
     }
 
     public Vector2Int Coordinate
@@ -42,6 +48,7 @@ public class Cell : MonoBehaviour
     private void OnMouseUp()
     {
         OnCellMouseUp?.Invoke(this);
+        //Activate();
     }
 
     public void Create(Vector2Int coordinate, bool hasBomb)
@@ -55,15 +62,33 @@ public class Cell : MonoBehaviour
         _bombCount++;
     }
 
-    public void ShowBombCount()
+    private void ShowBombCount()
     {
         _text.text = BombCount.ToString();
         _text.enabled = true;
         _image.enabled = false;
     }
 
-    public void ShowImage()
+    private void ShowImage()
     {
         _image.enabled = true;
     }
+
+    public bool Activate()
+    {
+        //TODO: check if we have a 'red flag' (preventing from activating)
+        //TODO: the 'question mark' don't do anything, is just a visual reminder for the user
+        if (_activated) return false;
+        _activated = true;
+        
+        if (HasBomb)
+        {
+            ShowImage();
+            //TODO: game over
+            return true;
+        }
+        ShowBombCount();
+        return false;
+    }
+
 }
