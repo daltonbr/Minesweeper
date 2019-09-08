@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Field : MonoBehaviour
 {
@@ -9,9 +12,16 @@ public class Field : MonoBehaviour
 
     [SerializeField] private Transform cellHolder;
 
+    private Camera _mainCamera;
+    
     // List/Array to hold cells
     private Cell[,] _cells; // = new int[9,9];
     private List<Cell> _bombCells;
+
+    private void Awake()
+    {
+        _mainCamera = Camera.main;
+    }
 
     private void Start()
     {
@@ -20,28 +30,28 @@ public class Field : MonoBehaviour
         Create(size, totalBombs);
     }
 
-    private void HandleCellMouseUp(Cell cell)
+    private void HandleCellLeftMouseUp(Cell cell)
     {
-        if (cell.HasBomb)
+        if (cell.HasMine)
         {
             cell.Activate();
             GameOver();
             return;
         }
 
-        if (cell.BombCount == 0)
+        if (cell.MineCount == 0)
         {
             cell.Activate();
             foreach (var neighbor in GetAllInactiveNeighbors(cell))
             {
-                if (neighbor.HasBomb) continue;
-                if (neighbor.BombCount == 0)
+                if (neighbor.HasMine) continue;
+                if (neighbor.MineCount == 0)
                 {
-                    HandleCellMouseUp(neighbor);
+                    HandleCellLeftMouseUp(neighbor);
                 }
                 else
                 {
-                    if (neighbor.BombCount > 0)
+                    if (neighbor.MineCount > 0)
                     {
                         neighbor.Activate();
                     }
@@ -52,6 +62,44 @@ public class Field : MonoBehaviour
 
         //cell.BombCount > 0
         cell.Activate();
+    }
+
+    private void HandleCellRightMouseUp(Cell cell)
+    {
+        cell.ToggleFlag();
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            //Debug.Log("Left Click");
+            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+            if (hit.collider)
+            {
+                //Debug.Log($"[LeftClick] This hit at {hit.point} @{hit.collider.name}");
+                var cell = hit.collider.GetComponent<Cell>();
+                if (cell) HandleCellLeftMouseUp(cell);
+            }
+            return;
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            //Debug.Log("Right Click");
+            var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+            if (hit.collider)
+            {
+                //Debug.Log($"[RightClick] This hit at {hit.point} @{hit.collider.name}");
+                var cell = hit.collider.GetComponent<Cell>();
+                if (cell) HandleCellRightMouseUp(cell);
+            }
+            return;
+        }
     }
 
     private void GameOver()
@@ -72,8 +120,9 @@ public class Field : MonoBehaviour
                 Cell newCell = newGameObject.GetComponent<Cell>();
                 newGameObject.name = $"Cell {i},{j}";
                 newGameObject.transform.position = new Vector3(i - offset.x, j - offset.y, 0);
-                newCell.Create(new Vector2Int(i, j), false);
-                newCell.OnCellMouseUp += HandleCellMouseUp;
+                newCell.Init(new Vector2Int(i, j), false);
+//                newCell.OnCellLeftMouseUp += HandleCellLeftMouseUp;
+//                newCell.OnCellRightMouseUp += HandleCellRightMouseUp;
                 _cells[i, j] = newCell;
             }
         }
@@ -85,9 +134,9 @@ public class Field : MonoBehaviour
         {
             var randomIndex = new Vector2Int(Random.Range(0, size.x), Random.Range(0, size.y));
 
-            if (_cells[randomIndex.x, randomIndex.y].HasBomb == false)
+            if (_cells[randomIndex.x, randomIndex.y].HasMine == false)
             {
-                _cells[randomIndex.x, randomIndex.y].HasBomb = true;
+                _cells[randomIndex.x, randomIndex.y].HasMine = true;
                 _bombCells.Add(_cells[randomIndex.x, randomIndex.y]);
             }
             else

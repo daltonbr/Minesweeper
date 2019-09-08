@@ -97,6 +97,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b26cfd420f19a1d4fbe72a854a68138d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cellEmpty: {fileID: 7026741443878737497, guid: 3090b019dc75c6248a30d4543f899e27,
+    type: 3}
+  cellActivated: {fileID: -2378968190083699406, guid: 3090b019dc75c6248a30d4543f899e27,
+    type: 3}
+  empty: {fileID: 7026741443878737497, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  flag: {fileID: 8506923059543165341, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  question: {fileID: 1856960819492889016, guid: 3090b019dc75c6248a30d4543f899e27,
+    type: 3}
+  mine: {fileID: -694734316328894766, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  mine1: {fileID: -4071844026997445120, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  mine2: {fileID: 3269022173784406122, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  mine3: {fileID: 5827651164926582225, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  mine4: {fileID: 3468913613601082463, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  mine5: {fileID: 2463781402371881575, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  mine6: {fileID: -2675511062366900241, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  mine7: {fileID: -9027055356288796589, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
+  mine8: {fileID: -8750398419442207883, guid: 3090b019dc75c6248a30d4543f899e27, type: 3}
 --- !u!61 &5383428372267782027
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -304,13 +321,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 4743505260871599223}
-    characterCount: 1
+    characterCount: 0
     spriteCount: 0
     spaceCount: 0
-    wordCount: 1
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
