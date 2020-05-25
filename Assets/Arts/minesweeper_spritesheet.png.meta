@@ -4,22 +4,22 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 8506923059543165341
-    second: flag
+    second: cellFlag
   - first:
       213: 3713978037637071141
     second: minesweeper_spritesheet_1
   - first:
       213: 1856960819492889016
-    second: question
+    second: cellQuestionMark
   - first:
       213: 3017161103155996123
     second: redFlag
   - first:
       213: 7026741443878737497
-    second: cell
+    second: cellUnknown
   - first:
       213: -2378968190083699406
-    second: cellActivated
+    second: cellDisarmed
   - first:
       213: 3157824150377952683
     second: minesweeper_spritesheet_4
@@ -28,13 +28,13 @@ TextureImporter:
     second: questionPressed
   - first:
       213: -694734316328894766
-    second: mine
+    second: cellMineExploded
   - first:
       213: -2981695594097981666
-    second: mineRed
+    second: cellMineRed
   - first:
       213: 3933453360720132611
-    second: mineCrossed
+    second: cellMineCrossed
   - first:
       213: -4071844026997445120
     second: mine1
@@ -105,7 +105,7 @@ TextureImporter:
       213: -5027509340213622084
     second: 0
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -159,6 +159,7 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  applyGammaDecoding: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -212,7 +213,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: flag
+      name: cellFlag
       rect:
         serializedVersion: 2
         x: 34
@@ -233,7 +234,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: question
+      name: cellQuestionMark
       rect:
         serializedVersion: 2
         x: 51
@@ -254,7 +255,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cell
+      name: cellUnknown
       rect:
         serializedVersion: 2
         x: 0
@@ -275,7 +276,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cellActivated
+      name: cellDisarmed
       rect:
         serializedVersion: 2
         x: 17
@@ -317,7 +318,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mine
+      name: cellMineExploded
       rect:
         serializedVersion: 2
         x: 85
@@ -338,7 +339,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mineRed
+      name: cellMineRed
       rect:
         serializedVersion: 2
         x: 102
@@ -359,7 +360,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mineCrossed
+      name: cellMineCrossed
       rect:
         serializedVersion: 2
         x: 119

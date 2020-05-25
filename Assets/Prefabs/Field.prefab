@@ -45,10 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: {x: 9, y: 9}
-  totalBombs: 10
+  totalMines: 10
   cellPrefab: {fileID: 2216244127962500780, guid: e641726a910384045b35afc067d182ff,
     type: 3}
   cellHolder: {fileID: 987155922531435727}
+  cellTheme: {fileID: 11400000, guid: 4ad6594dfb31c3848a467c078490ad52, type: 2}
 --- !u!1 &5987062571595827312
 GameObject:
   m_ObjectHideFlags: 0
