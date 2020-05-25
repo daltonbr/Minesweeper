@@ -2,7 +2,7 @@
 
 namespace Core
 {
-    [CreateAssetMenu(fileName = "CellTheme", menuName = "Minesweeper/CellTheme")]
+    [CreateAssetMenu(fileName = "Data/CellTheme", menuName = "Minesweeper/CellTheme", order = 0)]
     public class CellTheme : ScriptableObject
     {
         public Sprite unknown;
