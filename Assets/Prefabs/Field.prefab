@@ -44,8 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a61d8f827031a140ab074c74a6ba615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 9, y: 9}
-  totalMines: 10
+  setup: {fileID: 11400000, guid: 77bd597fcbd91be439fc31a4a5fda3b6, type: 2}
   cellPrefab: {fileID: 2216244127962500780, guid: e641726a910384045b35afc067d182ff,
     type: 3}
   cellHolder: {fileID: 987155922531435727}

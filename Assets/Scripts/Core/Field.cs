@@ -33,17 +33,23 @@ namespace Core
 
         private void Start()
         {
-            //TODO: small validation in FieldSetup
             Init(setup.size, setup.mines);
 
             InputHandler.OnLeftClickCell += HandleLeftClickCell;
             InputHandler.OnRightClickCell += CycleFlagStatus;
+            UIManager.OnResetButton += Reset;
         }
-
+        
         private void OnDestroy()
         {
             InputHandler.OnLeftClickCell -= HandleLeftClickCell;
             InputHandler.OnRightClickCell -= CycleFlagStatus;
+            UIManager.OnResetButton -= Reset;
+        }
+
+        private void Reset()
+        {
+            Init(setup.size, setup.mines);
         }
 
         private void HandleLeftClickCell(Cell cell)
@@ -134,7 +140,12 @@ namespace Core
                 mineCell.Status = CellStatus.Exploded;
             }
         }
-    
+
+        private void Init(FieldSetup fieldSetup)
+        {
+            Init(fieldSetup.size, fieldSetup.mines);
+        }
+
         private void Init(Vector2Int fieldSize, uint mines)
         {
             Vector2 offset = new Vector2(fieldSize.x / 2f - TileSize/2f, fieldSize.y / 2f - TileSize/2f);

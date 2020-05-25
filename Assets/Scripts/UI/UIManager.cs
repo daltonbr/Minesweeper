@@ -1,7 +1,6 @@
 ﻿using Core;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI
@@ -11,6 +10,10 @@ namespace UI
         [SerializeField] private TMP_Text gameOverText;
         [SerializeField] private RectTransform gameOverPanel;
         [SerializeField] private Button playAgainButton;
+
+        public delegate void ResetButton();
+
+        public static event ResetButton OnResetButton;
 
         private void Awake()
         {
@@ -43,7 +46,7 @@ namespace UI
         private void ResetGame()
         {
             gameOverPanel.gameObject.SetActive(false);
-            SceneManager.LoadScene(0);
+            OnResetButton?.Invoke();
         }
     
     }
