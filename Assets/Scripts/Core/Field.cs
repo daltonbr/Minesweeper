@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UI;
+using DaltonLima.Core;
+using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Core
 {
-    public class Field : MonoBehaviour
+    public class Field : Singleton<Field>
     {
         [SerializeField] private FieldSetup setup;
         [SerializeField] private GameObject cellPrefab;
@@ -16,7 +17,7 @@ namespace Core
         private Cell[,] _cells;
         private List<Cell> _mineCells;
         private const float TileSize = 1f;
-
+        
         public delegate void GameEvent();
         public static event GameEvent OnGameStart;
         public static event GameEvent OnGameLost;
@@ -33,23 +34,14 @@ namespace Core
 
         private void Start()
         {
-            Init(setup.size, setup.mines);
-
-            InputHandler.OnLeftClickCell += HandleLeftClickCell;
-            InputHandler.OnRightClickCell += CycleFlagStatus;
-            UIManager.OnResetButton += Reset;
+            InputManager.OnLeftClickCell += HandleLeftClickCell;
+            InputManager.OnRightClickCell += CycleFlagStatus;
         }
         
         private void OnDestroy()
         {
-            InputHandler.OnLeftClickCell -= HandleLeftClickCell;
-            InputHandler.OnRightClickCell -= CycleFlagStatus;
-            UIManager.OnResetButton -= Reset;
-        }
-
-        private void Reset()
-        {
-            Init(setup.size, setup.mines);
+            InputManager.OnLeftClickCell -= HandleLeftClickCell;
+            InputManager.OnRightClickCell -= CycleFlagStatus;
         }
 
         private void HandleLeftClickCell(Cell cell)
@@ -141,7 +133,7 @@ namespace Core
             }
         }
 
-        private void Init(FieldSetup fieldSetup)
+        public void Init(FieldSetup fieldSetup)
         {
             Init(fieldSetup.size, fieldSetup.mines);
         }
