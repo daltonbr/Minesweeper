@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd0a0bddc5e48efae6e7e87d469df47, type: 3}
   m_Name: FieldSetup_Expert
   m_EditorClassIdentifier: 
-  configName: Easy
+  configName: Expert
   size: {x: 24, y: 24}
   mines: 99

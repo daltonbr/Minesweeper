@@ -9,7 +9,6 @@ namespace Core
 {
     public class Field : Singleton<Field>
     {
-        [SerializeField] private FieldSetup setup;
         [SerializeField] private GameObject cellPrefab;
         [SerializeField] private Transform cellHolder;
         [SerializeField] private CellTheme cellTheme;
@@ -17,6 +16,7 @@ namespace Core
         private Cell[,] _cells;
         private List<Cell> _mineCells;
         private const float TileSize = 1f;
+        private FieldSetup _setup;
         
         public delegate void GameEvent();
         public static event GameEvent OnGameStart;
@@ -25,12 +25,6 @@ namespace Core
 
         public delegate void UpdateFieldSetup(FieldSetup setup);
         public static event UpdateFieldSetup OnUpdateFieldSetup;
-        
-        public FieldSetup Setup
-        {
-            get => setup;
-            set => setup = value;
-        }
 
         private void Start()
         {
@@ -133,19 +127,29 @@ namespace Core
             }
         }
 
+        private void PurgeField()
+        {
+            _cells = null;
+            _mineCells = null;
+            foreach (Transform child in cellHolder.transform)
+            {
+                Destroy(child.gameObject);   
+            }
+        }
+        
         public void Init(FieldSetup fieldSetup)
         {
-            Init(fieldSetup.size, fieldSetup.mines);
-        }
+            PurgeField();
+            _setup = fieldSetup;
+            var fieldSize = fieldSetup.size;
+            var mines = fieldSetup.mines;
 
-        private void Init(Vector2Int fieldSize, uint mines)
-        {
             Vector2 offset = new Vector2(fieldSize.x / 2f - TileSize/2f, fieldSize.y / 2f - TileSize/2f);
             _cells = new Cell[fieldSize.x, fieldSize.y];
             //TODO: Use some presets to define size/mines (easy, medium, expert)
-            for (int i = 0; i < setup.size.x; i++)
+            for (int i = 0; i < _setup.size.x; i++)
             {
-                for (int j = 0; j < setup.size.y; j++)
+                for (int j = 0; j < _setup.size.y; j++)
                 {
                     GameObject newGameObject = Instantiate(cellPrefab, cellHolder);
                     Cell newCell = newGameObject.GetComponent<Cell>();
@@ -161,7 +165,7 @@ namespace Core
             _mineCells = new List<Cell>();
             for (uint i = 0; i < mines; i++)
             {
-                var randomPosition = new Vector2Int(Random.Range(0, setup.size.x), Random.Range(0, setup.size.y));
+                var randomPosition = new Vector2Int(Random.Range(0, _setup.size.x), Random.Range(0, _setup.size.y));
 
                 if (_cells[randomPosition.x, randomPosition.y].HasMine == false)
                 {
@@ -180,7 +184,7 @@ namespace Core
                 AddMineCountToNeighbors(mineCell.Coordinate);
             }
 
-            OnUpdateFieldSetup?.Invoke(setup);
+            OnUpdateFieldSetup?.Invoke(_setup);
             OnGameStart?.Invoke();
         }
 
@@ -191,8 +195,8 @@ namespace Core
                 for (int j = -1; j <= 1; j++)
                 {
                     // skipping out-of-bounds
-                    if (coordinate.x + i < 0 || coordinate.x + i >= setup.size.x) continue;
-                    if (coordinate.y + j < 0 || coordinate.y + j >= setup.size.y) continue;
+                    if (coordinate.x + i < 0 || coordinate.x + i >= _setup.size.x) continue;
+                    if (coordinate.y + j < 0 || coordinate.y + j >= _setup.size.y) continue;
                     // exclude self
                     if (i == 0 && j == 0) continue;
                     _cells[coordinate.x + i, coordinate.y + j].AddMineCount();
@@ -206,10 +210,10 @@ namespace Core
             var neighbors = new List<Cell>();
             for (int i = -1; i <= 1; i++)
             {
-                if (coordinate.x + i < 0 || coordinate.x + i >= setup.size.x) continue;
+                if (coordinate.x + i < 0 || coordinate.x + i >= _setup.size.x) continue;
                 for (int j = -1; j <= 1; j++)
                 {
-                    if (coordinate.y + j < 0 || coordinate.y + j >= setup.size.y) continue;
+                    if (coordinate.y + j < 0 || coordinate.y + j >= _setup.size.y) continue;
                     if (i == 0 && j == 0) continue;
                     var currentCell = _cells[coordinate.x + i, coordinate.y + j];
                     if (currentCell.Status == CellStatus.Unknown)

@@ -1,4 +1,6 @@
-﻿using State.UIStates;
+﻿using Core;
+using Managers;
+using State.UIStates;
 using UnityEngine;
 
 namespace State.States
@@ -11,21 +13,21 @@ namespace State.States
         {
             Debug.Log("[MainMenu] OnEnter");
             
-            MainMenuPanel.OnPlayButton += HandlePlayButton;
             MainMenuPanel.OnOptionsButton += HandleOptionsButton;
+            MainMenuPanel.OnFieldSetupClicked += HandleFieldSetupClicked;
+        }
+
+        private void HandleFieldSetupClicked(FieldSetup fieldsetup)
+        {
+            GameManager.Instance.CurrentFieldSetup = fieldsetup;
+            StateManager.SetState(GamePlay.Instance);
         }
 
         public override void OnExit()
         {
             Debug.Log("[MainMenu] OnExit");
             
-            MainMenuPanel.OnPlayButton -= HandlePlayButton;
             MainMenuPanel.OnOptionsButton -= HandleOptionsButton;
-        }
-
-        private static void HandlePlayButton()
-        {
-            StateManager.SetState(GamePlay.Instance);
         }
 
         private static void HandleOptionsButton()

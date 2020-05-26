@@ -9,9 +9,12 @@ namespace Managers
     {
         [SerializeField] public List<FieldSetup> fieldSetups;
         [SerializeField] public List<CellTheme> cellThemes;
+        public FieldSetup CurrentFieldSetup;
 
         private void Awake()
         {
+            CurrentFieldSetup = fieldSetups[0];
+            
             Field.OnGameStart += HandleGameStart;
             Field.OnGameLost += HandleGameLost;
             Field.OnGameWon += HandleGameWon;
@@ -27,7 +30,7 @@ namespace Managers
         public void BootstrapField()
         {
             //TODO: load up these fieldSetups dynamically
-            Field.Instance.Init(fieldSetups[0]);
+            Field.Instance.Init(CurrentFieldSetup);
             InputManager.Instance.gameObject.SetActive(true);
         }
         
