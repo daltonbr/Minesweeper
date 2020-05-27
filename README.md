@@ -22,3 +22,9 @@ State Machine Pattern helps us with that, facilitating debug and maintenance.
 `Assets/Scripts/State/UIStates`
 
 `UIStates` run in conjunction with 'regular' states, decoupling UI concerns from the game logic.
+
+## Interesting features
+
+* Use of my [custom git Package](https://github.com/daltonbr/com.daltonlima.core) - for singletons
+* [CameraManager](/Assets/Scripts/Managers/CameraManager.cs) that dynamically adjusts the Camera Height accordingly.
+  
