@@ -18,7 +18,7 @@ State Machine Pattern helps us with that, facilitating debug and maintenance.
 
 ## Where to Find
 
-`Assets/Script/State/States`  
-`Assets/Script/State/UIStates`
+`Assets/Scripts/State/States`  
+`Assets/Scripts/State/UIStates`
 
 `UIStates` run in conjunction with 'regular' states, decoupling UI concerns from the game logic.
